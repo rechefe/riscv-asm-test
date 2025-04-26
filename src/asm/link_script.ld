@@ -1,10 +1,10 @@
 MEMORY {
-  kernel_space (rwx) : ORIGIN = 0x80000000, LENGTH = 2 * 1024 * 1024
+  kernel_space (rwx) : ORIGIN = 0x0, LENGTH = 2 * 1024 * 1024
 }
 
 SECTIONS {
   .text : {
-    *(.text.boot)
+    *(.text._start)
     *(.text)
   } > kernel_space
 

@@ -1,7 +1,20 @@
 {
     "cSpell.words": [
+        "addoption",
         "bazel",
+        "gcov",
+        "genrule",
+        "googletest",
+        "gtest",
+        "hdrs",
+        "libc",
+        "linkopts",
+        "mabi",
+        "nostdlib",
         "objcopy",
-        "riscv"
+        "objdump",
+        "riscv",
+        "srcs",
+        "stdlib"
     ]
 }

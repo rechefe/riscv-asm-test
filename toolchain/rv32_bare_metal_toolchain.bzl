@@ -2,7 +2,7 @@ load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl", "feature", "tool_pat
 load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 
 def _impl(ctx):
-    toolchain_tools = ["gcc", "ld", "ar", "cpp", "gcov", "nm", "objdump", "strip"]
+    toolchain_tools = ["gcc", "ld", "ar", "cpp", "gcov", "nm", "objdump", "strip", "objcopy"]
     tool_paths = [tool_path(name = tool, path = "/opt/riscv-toolchain/bin/riscv-none-elf-{}".format(tool)) for tool in toolchain_tools]
 
     ASSEMBLE_ACTIONS = [
@@ -25,7 +25,7 @@ def _impl(ctx):
                 actions = ASSEMBLE_AND_COMPILE_ACTIONS,
                 flag_groups = [
                     flag_group(
-                        flags = ["-march=rv32i", "-mabi=ilp32"],
+                        flags = ["-march=rv32im", "-mabi=ilp32"],
                     ),
                 ],
             )
@@ -79,10 +79,6 @@ def _impl(ctx):
         abi_version = "unknown",
         abi_libc_version = "unknown",
         tool_paths = tool_paths,
-        # cxx_builtin_include_directories = [
-        #     "/usr/riscv32-linux-gnu/include/",
-        #     "/usr/lib/gcc-cross/riscv32-linux-gnu/10/include/",
-        # ],
         features = features,
     )
 

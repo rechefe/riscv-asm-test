@@ -31,4 +31,5 @@ toolchain(
     ],
     toolchain = ":rv32_bare_metal_toolchain",
     toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+    visibility = ["//visibility:public"],
 )

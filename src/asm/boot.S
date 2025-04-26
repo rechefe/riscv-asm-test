@@ -1,6 +1,9 @@
-        .global _start
-        .section .text.boot
+        .section .text._start
 
-_start: la sp, _STACK_PTR
+_start: 
+        la sp, _STACK_PTR
 	call main
-	j .
+	j . // Halt - used in emulation to know we need to stop
+
+
+
