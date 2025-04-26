@@ -16,3 +16,9 @@ bazel build --platforms=//platform:riscv32_bare_metal //emulation:em_test
 ```
 
 The open `bazel-bin/emulation/log.txt` to check the pass state.
+
+# Running tests on your C:
+
+```sh
+bazel test //src/c:c_test
+```

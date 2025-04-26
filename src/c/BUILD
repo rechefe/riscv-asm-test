@@ -6,7 +6,7 @@ cc_library(
 )
 
 cc_test(
-    name = "hello_test",
+    name = "c_test",
     srcs = ["test/test.cc",],
     deps = [
         ":gcd",
