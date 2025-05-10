@@ -2,6 +2,8 @@
     "cSpell.words": [
         "addoption",
         "bazel",
+        "conftest",
+        "emul",
         "gcov",
         "genrule",
         "googletest",
@@ -13,6 +15,7 @@
         "nostdlib",
         "objcopy",
         "objdump",
+        "pytest",
         "riscv",
         "srcs",
         "stdlib"

@@ -1,3 +1,5 @@
+#include "gcd.h"
+
 int gcd(int a, int b) {
     int t;
     while (b != 0) {

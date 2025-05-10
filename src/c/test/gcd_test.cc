@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
-#include "src/c/gcd.h"
+extern "C" {
+    #include "../gcd/gcd.h"
+}
 
 // Demonstrate some basic assertions.
 TEST(GcdTest, BasicAssertions) {
