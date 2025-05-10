@@ -25,4 +25,8 @@ SECTIONS {
   . = ALIGN(8);
   . = . + 4096;
   _STACK_PTR = .;
+
+  .text._halt 0x10000 : {
+    *(.text._halt)
+  }
 }

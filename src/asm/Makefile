@@ -1,13 +1,8 @@
-.PHONY: test
+.PHONY: test build
 
 build: build/Makefile
 	@echo Build
 	${MAKE} -C build
-
-test: build/Makefile build
-	@echo Test
-	cd build; \
-		ctest
 
 setup: build/Makefile
 
