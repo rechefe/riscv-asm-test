@@ -2,7 +2,7 @@
 
 _start: 
         la sp, _STACK_PTR
-	call main
+	call gcd
 	j . // Halt - used in emulation to know we need to stop
 
 
