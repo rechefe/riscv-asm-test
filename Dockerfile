@@ -18,6 +18,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
+    dos2unix \
     build-essential \
     git \
     wget \
@@ -88,5 +89,6 @@ RUN echo "source ${VIRTUAL_ENV}/bin/activate" >> /root/.bashrc
 
 # Custom entrypoint
 COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /entrypoint.sh && \
+    dos2unix /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
