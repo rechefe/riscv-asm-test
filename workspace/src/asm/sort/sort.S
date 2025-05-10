@@ -29,9 +29,6 @@ loop_1:
 
 loop_2:
         // while ((j > 0) && (arr[j-1] > tmp))
-        // (j > 0) == !(0 >= j)
-        bge x0, t1, loop_2_exit
-
         // arr[j-1]
         addi t4, t1, -1
         slli t4, t4, 2
@@ -41,9 +38,11 @@ loop_2:
         // (arr[j-1] > tmp) == !(tmp >= arr[j-1])
         bge t2, t5, loop_2_exit
 
+        // (j > 0) == !(0 >= j)
+        bge x0, t1, loop_2_exit
+
         // arr[j] = arr[j-1]
-        addi t4, t4, 4
-        sw t5, 0(t4)
+        sw t5, 4(t4)
 
         // j--
         addi t1, t1, -1
@@ -52,9 +51,7 @@ loop_2:
 
 loop_2_exit:
         // arr[j] = tmp
-        slli t3, t1, 2 // t3 = t1 * 4 (j * sizeof(int) - without using mul) 
-        add t3, t3, a0
-        sw t2, 0(t3)
+        sw t2, 4(t4)
 
         // i++
         addi t0, t0, 1
