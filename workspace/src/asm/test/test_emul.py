@@ -7,18 +7,24 @@ from conftest import *
 from unicorn.riscv_const import *
 
 INT_SIZE = 4
-INT_MOD = 2 ** 32
-INT_MSB = 2 ** 31
+INT_MOD = 2**32
+INT_MSB = 2**31
+
 
 def write_array_to_buffer(mu: Uc, array: tuple, buffer: int):
     for i, val in enumerate(array):
-        mu.mem_write(buffer + i * INT_SIZE, (val % INT_MOD).to_bytes(INT_SIZE, byteorder='little'))
+        mu.mem_write(
+            buffer + i * INT_SIZE,
+            (val % INT_MOD).to_bytes(INT_SIZE, byteorder="little"),
+        )
 
-    
+
 def read_array_from_buffer(mu: Uc, len: int, buffer: int) -> list:
     res = []
     for i in range(len):
-        val = int.from_bytes(mu.mem_read(buffer + i * INT_SIZE, INT_SIZE), byteorder='little')
+        val = int.from_bytes(
+            mu.mem_read(buffer + i * INT_SIZE, INT_SIZE), byteorder="little"
+        )
         if val & INT_MSB:
             val -= INT_MOD
         res.append(val)
@@ -26,8 +32,9 @@ def read_array_from_buffer(mu: Uc, len: int, buffer: int) -> list:
 
 
 def get_vectors_from_json():
-    with open('../../../test_vectors/test_arrays.json', 'r') as fd:
-        return json.loads(fd.read())['test_arrays']
+    with open("../../../test_vectors/test_arrays.json", "r") as fd:
+        return json.loads(fd.read())["test_arrays"]
+
 
 @pytest.mark.parametrize("test_input", get_vectors_from_json())
 def test_emulation(mu: Uc, run_addresses: tuple, test_input: tuple):
