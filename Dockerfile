@@ -81,10 +81,17 @@ RUN cd /tmp && \
 # Copy workspace configuration
 COPY scripts/project.code-workspace /project.code-workspace
 
+# RISC V
+RUN mkdir -p /usr/local/riscv-none-elf-gcc && \
+    wget -qO- https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v14.2.0-3/xpack-riscv-none-elf-gcc-14.2.0-3-linux-x64.tar.gz | \
+    tar xz -C /usr/local/riscv-none-elf-gcc --strip-components=1
+
+RUN echo 'export PATH="/usr/local/riscv-none-elf-gcc/bin:$PATH"' >> /root/.bashrc
+
 #-------------------------------------------------------------------------------
 # Entrypoint
 
-# Activate the Python and Zephyr environments for shell sessions
+# Activate the Python environment for shell sessions
 RUN echo "source ${VIRTUAL_ENV}/bin/activate" >> /root/.bashrc 
 
 # Custom entrypoint

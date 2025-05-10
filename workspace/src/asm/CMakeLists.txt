@@ -11,8 +11,10 @@ add_executable(
 )
 
 # Configure linker settings
+set(CODE_ADDRESS 0)  # Default value, can be changed
+set(HALT_ADDRESS 16384)  # Default value, can be changed
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/shared/link_script.ld)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -fno-exceptions -Xlinker -T ${LINKER_SCRIPT} -Wl,-Map=gcd.map")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Wl,--defsym=CODE_ADDRESS=${CODE_ADDRESS} -Wl,--defsym=HALT_ADDRESS=${HALT_ADDRESS} -fno-exceptions -Xlinker -T ${LINKER_SCRIPT} -Wl,-Map=gcd.map")
 
 # Create binary file from ELF
 add_custom_command(
@@ -32,6 +34,7 @@ add_custom_target(
     COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target gcd.elf
     COMMAND ${Python3_EXECUTABLE} -m pytest ${CMAKE_CURRENT_SOURCE_DIR}/test
             --binary=${CMAKE_CURRENT_BINARY_DIR}/gcd.bin
+            --code-address=${CODE_ADDRESS} --halt-address=${HALT_ADDRESS}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
     COMMENT "Rebuilding and running tests"
 )
@@ -60,8 +63,9 @@ function(add_pytest_tests)
             # Add each test as a separate CTest
             add_test(
                 NAME pytest_${test_case}
-                COMMAND ${Python3_EXECUTABLE} -m pytest ${test_case}
-                        --binary=${CMAKE_CURRENT_BINARY_DIR}/gcd.bin
+                COMMAND ${Python3_EXECUTABLE} -m pytest ${test_case} 
+                --binary=${CMAKE_CURRENT_BINARY_DIR}/gcd.bin 
+                --code-address=${CODE_ADDRESS} --halt-address=${HALT_ADDRESS}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
             )
             set_tests_properties(pytest_${test_case} PROPERTIES DEPENDS gcd.elf)

@@ -1,5 +1,8 @@
+CODE_ADDRESS = DEFINED(CODE_ADDRESS) ? CODE_ADDRESS : 0x0;
+HALT_ADDRESS = DEFINED(HALT_ADDRESS) ? HALT_ADDRESS : 0x100000;
+
 MEMORY {
-  kernel_space (rwx) : ORIGIN = 0x0, LENGTH = 2 * 1024 * 1024
+  kernel_space (rwx) : ORIGIN = CODE_ADDRESS, LENGTH = 2 * 1024 * 1024
 }
 
 SECTIONS {
@@ -26,7 +29,7 @@ SECTIONS {
   . = . + 4096;
   _STACK_PTR = .;
 
-  .text._halt 0x10000 : {
+  .text._halt HALT_ADDRESS : {
     *(.text._halt)
   }
 }
