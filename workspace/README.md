@@ -14,5 +14,6 @@ Your assembly project is under src/asm, write there your code,
 to run and test:
 
 ```sh
+cd src/asm
 make build
 ```

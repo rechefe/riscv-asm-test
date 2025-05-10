@@ -5,8 +5,8 @@ project(test C ASM)
 
 # Add executable target
 add_executable(
-    gcd.elf
-    gcd/gcd.S
+    sort.elf
+    sort/sort.S
     shared/boot.S
 )
 
@@ -14,13 +14,13 @@ add_executable(
 set(CODE_ADDRESS 0)  # Default value, can be changed
 set(HALT_ADDRESS 16384)  # Default value, can be changed
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/shared/link_script.ld)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Wl,--defsym=CODE_ADDRESS=${CODE_ADDRESS} -Wl,--defsym=HALT_ADDRESS=${HALT_ADDRESS} -fno-exceptions -Xlinker -T ${LINKER_SCRIPT} -Wl,-Map=gcd.map")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -nostartfiles -Wl,--defsym=CODE_ADDRESS=${CODE_ADDRESS} -Wl,--defsym=HALT_ADDRESS=${HALT_ADDRESS} -fno-exceptions -Xlinker -T ${LINKER_SCRIPT} -Wl,-Map=sort.map")
 
 # Create binary file from ELF
 add_custom_command(
-    TARGET gcd.elf POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:gcd.elf> gcd.bin
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:gcd.elf> ${CMAKE_CURRENT_BINARY_DIR}/gcd.elf
+    TARGET sort.elf POST_BUILD
+    COMMAND ${CMAKE_OBJCOPY} -O binary $<TARGET_FILE:sort.elf> sort.bin
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:sort.elf> ${CMAKE_CURRENT_BINARY_DIR}/sort.elf
     COMMENT "Generating binary file from ELF"
 )
 
@@ -31,9 +31,9 @@ find_package(Python3 REQUIRED COMPONENTS Interpreter)
 
 add_custom_target(
     rebuild_and_test ALL
-    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target gcd.elf
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target sort.elf
     COMMAND ${Python3_EXECUTABLE} -m pytest ${CMAKE_CURRENT_SOURCE_DIR}/test
-            --binary=${CMAKE_CURRENT_BINARY_DIR}/gcd.bin
+            --binary=${CMAKE_CURRENT_BINARY_DIR}/sort.bin
             --code-address=${CODE_ADDRESS} --halt-address=${HALT_ADDRESS}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
     COMMENT "Rebuilding and running tests"
@@ -64,11 +64,11 @@ function(add_pytest_tests)
             add_test(
                 NAME pytest_${test_case}
                 COMMAND ${Python3_EXECUTABLE} -m pytest ${test_case} 
-                --binary=${CMAKE_CURRENT_BINARY_DIR}/gcd.bin 
+                --binary=${CMAKE_CURRENT_BINARY_DIR}/sort.bin 
                 --code-address=${CODE_ADDRESS} --halt-address=${HALT_ADDRESS}
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/test
             )
-            set_tests_properties(pytest_${test_case} PROPERTIES DEPENDS gcd.elf)
+            set_tests_properties(pytest_${test_case} PROPERTIES DEPENDS sort.elf)
         endif()
     endforeach()
 endfunction()

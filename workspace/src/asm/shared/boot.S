@@ -1,7 +1,7 @@
         .section .text._start
 _start: 
         la sp, _STACK_PTR
-	call gcd
+	call insertion_sort
 	j _halt
 
         .section .text._halt
